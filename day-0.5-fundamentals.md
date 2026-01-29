@@ -1,7 +1,6 @@
 # Day 0.5: Application Fundamentals
 
-**Date:** January 31, 2025
-**Time spent:** [Fill after completing]
+**Date:** January 29, 2025
 
 ---
 
@@ -43,3 +42,11 @@ Requirement.txt is a file with all the dependencies and libraries used by python
 
 ## Things I'm still confused about:
 Libraries, dependencies
+
+---
+## Status: ✅ COMPLETED
+**Claude's Feedback:** Ready for Week 1
+**Key Learnings:** 
+- Libraries = pre-written code collections
+- Dependencies = libraries your app needs
+- Both terms refer to the same thing from different angles
