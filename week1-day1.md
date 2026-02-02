@@ -1,13 +1,3 @@
-Commands used
-
-docker run -d -p 8080:80 --name hello nginx
--d : detached mode
--p: port mapping
---name: naming container
-hello container name
-nginx image
-
-
 # Week 1 Day 1: First Container Experience
 
 **Date:** February 1, 2025
