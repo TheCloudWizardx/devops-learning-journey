@@ -81,11 +81,12 @@ Each day is documented with:
 | Week | Day | Topic | Status |
 |------|-----|-------|--------|
 | 1 | 1 | [First Container Experience](week1-day1.md) | ✅ Complete |
-| 1 | 2 | Docker Images & Layers | 🔄 In Progress |
-| 1 | 3 | Writing Dockerfiles | ⏳ Upcoming |
+| 1 | 2 | [Docker Images & Layers](week1-day2.md) | ✅ Complete |
+| 1 | 3 | [Writing Dockerfiles](week1-day3.md) | ✅ Complete |
 | 1 | 4 | [Python Flask App Container](week1-day4.md) | ✅ Complete |
 | 1 | 5 | [Container Debugging & Logs](week1-day5.md) | ✅ Complete |
 | 1 | 6 | Docker Volumes & Data Persistence | 🔄 In Progress |
+| 1 | 7 | Week 1 Mini-Project | ⏳ Upcoming |
 ---
 
 ## 🛠️ Tech Stack
