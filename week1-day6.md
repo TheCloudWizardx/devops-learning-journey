@@ -74,15 +74,79 @@ curl http://localhost:8080   #Checking if data persists
 
 ## Part 4: Bind Mounts
 
-[Include your bind mount experiments]
+[ mkdir bindmount
+ cd bindmount/
+ ls
+ vi index.html
+ docker run -d --name nginx-bind -p 8082:80 -v ~/cloud/docker/bindmount:/usr/share/nginx/html nginx
+1f135cddee2c74a66b15556d002284a181a4b3b35be229c09bae56859de49db4
+ curl http://localhost:8082
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bind Mount Test</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔗 Bind Mount Demo</h1>
+    <p>This file is on my HOST machine!</p>
+    <p>Edit it and refresh - changes appear instantly!</p>
+</body>
+</html>
+
+ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS              PORTS                                     NAMES
+1f135cddee2c   nginx     "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:8082->80/tcp, [::]:8082->80/tcp   nginx-bind
+ vi index.html 
+ curl http://localhost:8082
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bind Mount Test</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔗 Bind Mount Demo</h1>
+    <p>This file is on my HOST machine!</p>
+    <p>meowwwwwwwwwwwwww Edit it and refresh - changes appear instantly!</p>
+</body>
+</html>
+]
 
 ---
 
 ## Part 5: Volume vs Bind Mount Comparison
 
-[Volume Bind Mount
-Volumes are created by docker itself and managed by the docker only uses, config files
-Bind mount is a directory or file which is specified for storing data uses, devlopment]
+[
+### Volume vs Bind Mount Comparison
+
+| Feature | Named Volume | Bind Mount |
+|---------|--------------|------------|
+| **Location** | Docker-managed (/var/lib/docker/volumes) | User-specified (~/path) |
+| **Portability** | High (managed by Docker) | Low (host-specific path) |
+| **Use case** | Production, databases | Development, config files |
+| **Syntax** | `-v volume-name:/path` | `-v /host/path:/container/path` |
+| **Performance** | Optimized by Docker | Native filesystem performance |
+| **Backup** | Use docker volume commands | Standard file backup tools |
+
+**When to use volumes:** [Production databases, persistent app data]
+**When to use bind mounts:** [Development, sharing config files, logs]]
 
 ---
 
@@ -90,13 +154,76 @@ Bind mount is a directory or file which is specified for storing data uses, devl
 
 ### Persistent Flask + SQLite App
 
-[Include your database persistence test results]
+[### Database Persistence Test
+
+**Data created:**
+- Table: users
+- Records: Alice, Bob
+
+**After container deletion:**
+[Data still present in new container ✅]
+
+**Why this works:**
+[Volume persists data outside container lifecycle]
+
+**Real-world use:**
+[Production databases MUST use volumes to avoid data loss]]
 
 ---
 
 ## Part 7: Troubleshooting
 
-[Include the 3 problem scenarios]
+[### Problem 1: Permission Issues
+
+**Error encountered:**
+```bash
+bash: /data/file.txt: Permission denied
+```
+
+**Why it happened:**
+Volume created by root, but container running as user 1000 can't write to it
+
+**Solutions:**
+1. Run as root user (remove --user flag)
+2. Pre-create volume with correct permissions:
+```bash
+   docker volume create test-data
+   docker run --rm -v test-data:/data ubuntu chown -R 1000:1000 /data
+   docker run -d --user 1000:1000 -v test-data:/data ubuntu ...
+```
+3. Use bind mount with host directory owned by user 1000
+
+**Lesson:** Volume permissions matter when using non-root usersn this, user doesn't have root permission, therefore either use root and the ubuntu command won't also run due to no permission
+
+### Problem 2: Typo in Bind Mount Path
+
+**What happens:** Docker creates empty directory at typo path
+**Issue:** Your actual data isn't where you expected
+**Solution:** Always verify paths before running: `ls -la ~/path/to/verify`
+
+### Problem 3: Multiple Writers to Same Volume
+
+**Tested:** Two containers writing to same file simultaneously
+**Result:** Both can write, but no coordination - data can interleave
+**Lesson:** Multiple containers can share volumes, but application needs to handle concurrent writes (locks, queues, etc.)]
+
+[  ### Persistent Database Application
+
+**Visit count before deletion:** [e.g., Visit #3]
+
+**Visit count after recreation:** [e.g., Visit #4 - continued!]
+
+**Why this matters:**
+In production, databases MUST persist data. Without volumes:
+- User data would be lost on every deployment
+- Database would reset on container restart
+- All application state would disappear
+
+**Real-world applications:**
+- User databases
+- Application logs
+- Uploaded files
+- Configuration data]
 
 ---
 
@@ -128,15 +255,25 @@ docker ps --filter volume=<volume-name>
 5. **Always use volumes for databases:** Data loss is unacceptable in production
 
 **Most important insight:**
-[Your key learning about data persistence]
+[
+Containers are designed to be disposable - the application inside can be replaced/upgraded at any time. But DATA must persist. This is why volumes exist outside the container lifecycle.
+
+**The critical distinction:**
+- **Container = disposable** (upgrade, replace, delete freely)
+- **Volume = permanent** (survives container deletion)
+
+This separation is the foundation of modern cloud architecture - stateless applications with stateful data storage.
+
+**Real-world impact:**
+Without volumes, every deployment would wipe user data, every crash would lose transactions, every update would reset databases. Volumes make production systems viable.]
 
 ---
 
 ## Confidence Assessment
 
-**Understanding of volumes:** [1-10]
-**Comfort with bind mounts:** [1-10]
-**Ready for real applications:** [1-10]
+**Understanding of volumes:** [7]
+**Comfort with bind mounts:** [7]
+**Ready for real applications:** [7]
 **Ready for Day 7 (Final Project):** ✅ Yes
 
 ---
