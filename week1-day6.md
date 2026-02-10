@@ -1,7 +1,7 @@
 # Week 1 Day 6: Docker Volumes & Data Persistence
 
 **Date:** [Feb 5, 2026]
-**Time spent:** [Time]
+**Time spent:** [3-4 hours]
 **Status:** ✅ Complete
 
 ---
