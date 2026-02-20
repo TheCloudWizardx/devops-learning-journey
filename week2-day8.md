@@ -107,7 +107,13 @@ APP_ENV=development]
 4. **Production-ready features:** Health checks, restarts, logging
 
 **Most important insight:**
-[Debugging compose containers]
+Docker Compose transforms multi-container deployment from error-prone manual process to single-command reliability. The time savings (50%) and command reduction (89%) are just metrics - the real value is reproducibility. The same `docker-compose.yml` works on any machine, eliminating "works on my machine" problems.
+
+**Key learning:**
+Infrastructure as Code isn't just about automation - it's about treating infrastructure like software: version-controlled, testable, and reproducible.
+
+**Debugging learning:**
+The 504 timeout taught me that even with Compose, understanding container networking and startup dependencies is critical. Health checks and proper `depends_on` conditions are not optional for production.
 
 ---
 
